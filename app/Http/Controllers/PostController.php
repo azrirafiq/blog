@@ -34,8 +34,35 @@ class PostController extends Controller
 
     	return redirect()->route('post.index')->withSuccess('Post Created');
     }
-    public function editPost() {
-    	
+    public function editPost($id) {
+    	$varpost=Post::where([
+    		['id','=',$id],
+    		['user_id','=',Auth::user()->id]
+    		])->first();
+
+    	return view('editform')->withId($id)->withPost($varpost);
+    }
+    public function updatePost(Request $request, $id) {
+    	$this->validate($request, [
+    		'title' => 'required|max:60',
+    		'story' => 'required|max:100',
+    		]);
+
+    	$varpost=Post::where([
+    		['id','=',$id],
+    		['user_id','=',Auth::user()->id]
+    		])->first();
+
+    	if ($varpost) {
+	    	$varpost->title=$request->input('title');
+	    	$varpost->story=$request->input('story');
+	    	$varpost->save();
+
+	    	return redirect()->route('post.index')->withSuccess('Post Created');
+    	}
+    	else {
+    		return redirect()->route('post.index')->withSuccess('Cannot update');
+    	}
     }
 
     public function deletePost($id) {
@@ -44,10 +71,10 @@ class PostController extends Controller
 
     	if ($varpost) {
     		$varpost->delete();
-    		return redirect()->route('post.index')->withSuccess('Post Succesfully Deleted');
+    		return redirect()->route('post.index')->withSuccess('Post Succesfully Delete');
     	}
     	else {
-    		return redirect()->route('post.index')->withSuccess('Cannot Deleted');
+    		return redirect()->route('post.index')->withSuccess('Cannot Delete');
     	}
     }
 }
