@@ -34,6 +34,9 @@ class PostController extends Controller
 
     	return redirect()->route('post.index')->withSuccess('Post Created');
     }
+    public function editPost() {
+    	
+    }
 
     public function deletePost($id) {
     	$varpost=Post::find($id);
