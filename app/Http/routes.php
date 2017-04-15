@@ -24,3 +24,15 @@ Route::get('/about', 'PagesController@showabout');
 Route::get('/contactus', 'PagesController@contactus');
 
 Route::get('/admin/dashboard', 'AdminController@login');
+
+Route::get('/post', ['as' => 'post.index', 'uses'=> 'PostController@showAllPosts']);
+
+Route::get('/post/create', ['as' => 'post.create', 'uses'=> 'PostController@createPost']);
+
+Route::post('/post/create/save', ['as' => 'post.create.save', 'uses'=> 'PostController@savePost']);
+
+Route::get('/post/edit/{id}', ['as' => 'post.edit', 'uses'=> 'PostController@editPost']);
+
+Route::get('/post/delete/{id}', ['as' => 'post.delete', 'uses'=> 'PostController@deletePost']);
+
+Route::resource('blog','BlogController');
